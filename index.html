@@ -3,11 +3,11 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ClassicParts - Protótipo MVP</title>
+    <title>Auto Garimpo</title>
     <!-- Font Awesome para ícones -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
-        /* Estilos CSS Completos */
+        /* Estilos CSS Completos - Auto Garimpo */
         * {
             margin: 0;
             padding: 0;
@@ -16,7 +16,7 @@
         
         body {
             font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-            background: #f5f5f5;
+            background: linear-gradient(135deg, #bdc3c7 0%, #7f8c8d 100%); /* Gray gradient */
             color: #333;
             display: flex;
             justify-content: center;
@@ -29,7 +29,7 @@
             height: 812px;
             background: white;
             border-radius: 25px;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+            box-shadow: 0 20px 60px rgba(0,0,0,0.4);
             overflow: hidden;
             position: relative;
             display: flex;
@@ -41,20 +41,23 @@
             justify-content: space-between;
             padding: 10px 20px;
             font-size: 14px;
-            background: #f8f8f8;
-            border-bottom: 1px solid #eee;
+            background: #f8f9fa;
+            border-bottom: 1px solid #e9ecef;
+            font-weight: 500;
         }
         
         .header {
             padding: 15px 20px;
-            background: #2c3e50;
+            background: linear-gradient(135deg, #f39c12 0%, #e67e22 100%); /* Orange gradient */
             color: white;
+            box-shadow: 0 4px 20px rgba(243, 156, 18, 0.3);
         }
         
         .logo {
-            font-size: 20px;
+            font-size: 22px;
             font-weight: bold;
             margin-bottom: 15px;
+            text-shadow: 0 2px 4px rgba(0,0,0,0.2);
         }
         
         .nav-buttons {
@@ -65,16 +68,24 @@
         .nav-btn {
             background: none;
             border: none;
-            color: rgba(255,255,255,0.7);
-            padding: 5px 10px;
-            border-radius: 15px;
+            color: rgba(255,255,255,0.8);
+            padding: 8px 12px;
+            border-radius: 20px;
             font-size: 14px;
             cursor: pointer;
+            transition: all 0.3s ease;
+            font-weight: 500;
         }
         
         .nav-btn.active {
-            background: rgba(255,255,255,0.2);
+            background: rgba(255,255,255,0.25);
             color: white;
+            backdrop-filter: blur(10px);
+        }
+        
+        .nav-btn:hover {
+            background: rgba(255,255,255,0.15);
+            transform: translateY(-1px);
         }
         
         .content {
@@ -82,6 +93,7 @@
             overflow-y: auto;
             padding: 15px;
             display: none;
+            background: #f8f9fa;
         }
         
         .content.active {
@@ -90,66 +102,91 @@
         
         .search-bar {
             width: 100%;
-            padding: 12px 15px;
-            border: 1px solid #ddd;
+            padding: 15px 20px;
+            border: none;
             border-radius: 25px;
-            margin-bottom: 15px;
+            margin-bottom: 20px;
             font-size: 14px;
+            background: white;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+            transition: all 0.3s ease;
+        }
+        
+        .search-bar:focus {
+            outline: none;
+            box-shadow: 0 6px 25px rgba(243, 156, 18, 0.2);
+            transform: translateY(-2px);
         }
         
         #parts-container {
             display: flex;
             flex-direction: column;
-            gap: 15px;
+            gap: 20px;
         }
         
         .card {
-            border: 1px solid #eee;
-            border-radius: 10px;
+            border: none;
+            border-radius: 15px;
             overflow: hidden;
-            box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+            box-shadow: 0 8px 25px rgba(0,0,0,0.1);
             cursor: pointer;
-            transition: transform 0.2s;
+            transition: all 0.3s ease;
+            background: white;
         }
         
         .card:hover {
-            transform: translateY(-2px);
+            transform: translateY(-5px);
+            box-shadow: 0 15px 35px rgba(0,0,0,0.15);
         }
         
         .card-image {
             height: 180px;
-            background: #f0f0f0;
+            background: #f8f9fa;
             display: flex;
             justify-content: center;
             align-items: center;
             font-size: 50px;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .card-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.3s ease;
+        }
+        
+        .card:hover .card-image img {
+            transform: scale(1.05);
         }
         
         .card-content {
-            padding: 15px;
+            padding: 20px;
         }
         
         .card-title {
             font-weight: bold;
-            margin-bottom: 5px;
+            margin-bottom: 8px;
             font-size: 16px;
+            color: #2d3436;
         }
         
         .card-subtitle {
-            color: #666;
+            color: #636e72;
             font-size: 14px;
-            margin-bottom: 8px;
+            margin-bottom: 12px;
         }
         
         .card-price {
             font-weight: bold;
-            color: #e74c3c;
-            font-size: 18px;
-            margin-bottom: 5px;
+            color: #f39c12; /* Orange price */
+            font-size: 20px;
+            margin-bottom: 8px;
         }
         
         .card-location {
-            color: #3498db;
+            color: #74b9ff;
             font-size: 13px;
             display: flex;
             align-items: center;
@@ -159,68 +196,90 @@
         /* Formulário de Venda */
         .form-screen {
             padding: 20px;
+            background: white;
         }
         
         .form-group {
-            margin-bottom: 15px;
+            margin-bottom: 20px;
         }
         
         .form-label {
             display: block;
-            margin-bottom: 5px;
-            font-weight: 500;
-            color: #2c3e50;
+            margin-bottom: 8px;
+            font-weight: 600;
+            color: #2d3436;
         }
         
         .form-input {
             width: 100%;
-            padding: 12px 15px;
-            border: 1px solid #ddd;
-            border-radius: 8px;
+            padding: 15px 18px;
+            border: 2px solid #ddd;
+            border-radius: 12px;
             font-size: 14px;
+            transition: all 0.3s ease;
+            background: #f8f9fa;
+        }
+        
+        .form-input:focus {
+            outline: none;
+            border-color: #f39c12; /* Orange border */
+            background: white;
+            box-shadow: 0 0 0 3px rgba(243, 156, 18, 0.1);
         }
         
         textarea.form-input {
             resize: vertical;
+            min-height: 100px;
         }
         
         .upload-area {
-            border: 2px dashed #ccc;
-            border-radius: 8px;
-            padding: 20px;
+            border: 2px dashed #f39c12; /* Orange dashed border */
+            border-radius: 12px;
+            padding: 30px 20px;
             text-align: center;
             cursor: pointer;
-            margin-bottom: 10px;
+            margin-bottom: 15px;
+            transition: all 0.3s ease;
+            background: rgba(243, 156, 18, 0.05); /* Orange background */
+        }
+        
+        .upload-area:hover {
+            background: rgba(243, 156, 18, 0.1); /* Orange background on hover */
+            border-color: #e67e22; /* Darker orange border on hover */
         }
         
         .upload-text {
-            color: #666;
+            color: #f39c12; /* Orange text */
+            font-weight: 500;
         }
         
         #preview-container {
             display: flex;
             gap: 10px;
-            margin-top: 10px;
+            margin-top: 15px;
         }
         
         .btn-primary {
-            background: #2c3e50;
+            background: linear-gradient(135deg, #f39c12 0%, #e67e22 100%); /* Orange gradient */
             color: white;
             border: none;
-            padding: 12px 20px;
-            border-radius: 8px;
+            padding: 15px 25px;
+            border-radius: 12px;
             width: 100%;
             font-size: 16px;
-            font-weight: 500;
+            font-weight: 600;
             cursor: pointer;
             display: flex;
             justify-content: center;
             align-items: center;
-            gap: 8px;
+            gap: 10px;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(243, 156, 18, 0.3);
         }
         
         .btn-primary:hover {
-            background: #1a252f;
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(243, 156, 18, 0.4);
         }
         
         /* Tela de Chat */
@@ -228,6 +287,7 @@
             display: none;
             flex-direction: column;
             height: 100%;
+            background: white;
         }
         
         .chat-screen.active {
@@ -235,20 +295,22 @@
         }
         
         .chat-header {
-            padding: 15px;
-            background: #2c3e50;
+            padding: 20px;
+            background: linear-gradient(135deg, #f39c12 0%, #e67e22 100%); /* Orange gradient */
             color: white;
             text-align: center;
+            font-weight: 600;
+            font-size: 18px;
         }
         
         .chat-messages {
             flex: 1;
-            padding: 15px;
+            padding: 20px;
             overflow-y: auto;
             display: flex;
             flex-direction: column;
-            gap: 10px;
-            background: #f5f5f5;
+            gap: 15px;
+            background: #f8f9fa;
         }
         
         .message {
@@ -265,55 +327,73 @@
         }
         
         .message-bubble {
-            padding: 10px 15px;
-            border-radius: 18px;
+            padding: 12px 18px;
+            border-radius: 20px;
             font-size: 14px;
+            line-height: 1.4;
         }
         
         .sent .message-bubble {
-            background: #3498db;
+            background: linear-gradient(135deg, #7f8c8d 0%, #95a5a6 100%); /* Gray gradient for sent messages */
             color: white;
-            border-bottom-right-radius: 5px;
+            border-bottom-right-radius: 8px;
         }
         
         .received .message-bubble {
             background: white;
             border: 1px solid #ddd;
-            border-bottom-left-radius: 5px;
+            border-bottom-left-radius: 8px;
+            color: #2d3436;
         }
         
         .chat-input {
             display: flex;
-            padding: 10px;
+            padding: 15px;
             background: white;
-            border-top: 1px solid #eee;
+            border-top: 1px solid #e9ecef;
+            gap: 10px;
         }
         
         #chat-input-field {
             flex: 1;
-            padding: 12px 15px;
-            border: 1px solid #ddd;
+            padding: 12px 18px;
+            border: 2px solid #ddd;
             border-radius: 25px;
-            margin-right: 10px;
+            font-size: 14px;
+            transition: all 0.3s ease;
+        }
+        
+        #chat-input-field:focus {
+            outline: none;
+            border-color: #f39c12; /* Orange border */
         }
         
         .send-btn {
-            background: #2c3e50;
+            background: linear-gradient(135deg, #f39c12 0%, #e67e22 100%); /* Orange gradient */
             color: white;
             border: none;
             width: 45px;
             height: 45px;
             border-radius: 50%;
             cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .send-btn:hover {
+            transform: scale(1.05);
         }
         
         /* Bottom Navigation */
         .bottom-nav {
             display: flex;
             justify-content: space-around;
-            padding: 10px 0;
+            padding: 15px 0;
             background: white;
-            border-top: 1px solid #eee;
+            border-top: 1px solid #e9ecef;
+            box-shadow: 0 -4px 20px rgba(0,0,0,0.1);
         }
         
         .nav-item {
@@ -322,13 +402,19 @@
             align-items: center;
             gap: 5px;
             cursor: pointer;
-            padding: 5px 10px;
-            border-radius: 10px;
-            color: #666;
+            padding: 8px 12px;
+            border-radius: 12px;
+            color: #636e72;
+            transition: all 0.3s ease;
         }
         
         .nav-item.active {
-            color: #2c3e50;
+            color: #f39c12; /* Orange active item */
+            background: rgba(243, 156, 18, 0.1); /* Orange background */
+        }
+        
+        .nav-item:hover {
+            transform: translateY(-2px);
         }
         
         .nav-icon {
@@ -337,22 +423,25 @@
         
         .nav-label {
             font-size: 12px;
+            font-weight: 500;
         }
         
         /* Toast Notification */
         .toast {
             position: fixed;
-            bottom: 70px;
+            bottom: 100px;
             left: 50%;
             transform: translateX(-50%);
-            background: rgba(0,0,0,0.7);
+            background: linear-gradient(135deg, #f39c12 0%, #e67e22 100%); /* Orange gradient */
             color: white;
-            padding: 10px 20px;
-            border-radius: 20px;
+            padding: 12px 24px;
+            border-radius: 25px;
             font-size: 14px;
+            font-weight: 500;
             opacity: 0;
-            transition: opacity 0.3s;
+            transition: all 0.3s ease;
             z-index: 100;
+            box-shadow: 0 8px 25px rgba(243, 156, 18, 0.3);
         }
         
         /* Modal */
@@ -363,43 +452,58 @@
             left: 0;
             right: 0;
             bottom: 0;
-            background: rgba(0,0,0,0.5);
+            background: rgba(0,0,0,0.6);
             z-index: 200;
             justify-content: center;
             align-items: center;
+            backdrop-filter: blur(5px);
         }
         
         .modal-content {
             background: white;
-            padding: 25px;
-            border-radius: 10px;
+            padding: 30px;
+            border-radius: 20px;
             max-width: 90%;
             max-height: 90%;
             overflow-y: auto;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
         }
         
         .close-modal {
             position: absolute;
             top: 15px;
-            right: 15px;
-            font-size: 24px;
+            right: 20px;
+            font-size: 28px;
             cursor: pointer;
+            color: #636e72;
+            transition: color 0.3s ease;
+        }
+        
+        .close-modal:hover {
+            color: #f39c12; /* Orange hover */
         }
         
         .reset-btn {
-            background: #e74c3c;
+            background: linear-gradient(135deg, #e17055 0%, #d63031 100%); /* Keep red for reset/delete */
             color: white;
             border: none;
-            padding: 10px 15px;
-            border-radius: 5px;
-            margin-top: 15px;
+            padding: 12px 20px;
+            border-radius: 8px;
+            margin-top: 20px;
             cursor: pointer;
+            font-weight: 500;
+            transition: all 0.3s ease;
+        }
+        
+        .reset-btn:hover {
+            transform: translateY(-2px);
         }
         
         /* Tela de Perfil */
         .profile-screen {
             padding: 20px;
             display: none;
+            background: white;
         }
         
         .profile-screen.active {
@@ -408,37 +512,43 @@
         
         .profile-header {
             text-align: center;
-            margin-bottom: 20px;
+            margin-bottom: 30px;
         }
         
         .profile-avatar {
             width: 100px;
             height: 100px;
             border-radius: 50%;
-            background: #3498db;
+            background: linear-gradient(135deg, #7f8c8d 0%, #95a5a6 100%); /* Gray gradient for avatar */
             color: white;
             display: flex;
             justify-content: center;
             align-items: center;
             font-size: 40px;
-            margin: 0 auto 15px;
+            margin: 0 auto 20px;
+            box-shadow: 0 8px 25px rgba(127, 140, 141, 0.3);
         }
         
         .profile-name {
-            font-size: 20px;
+            font-size: 22px;
             font-weight: bold;
-            margin-bottom: 5px;
+            margin-bottom: 8px;
+            color: #2d3436;
         }
         
         .profile-location {
-            color: #666;
-            margin-bottom: 20px;
+            color: #636e72;
+            margin-bottom: 25px;
+            font-size: 14px;
         }
         
         .profile-stats {
             display: flex;
             justify-content: space-around;
-            margin-bottom: 20px;
+            margin-bottom: 30px;
+            background: #f8f9fa;
+            padding: 20px;
+            border-radius: 15px;
         }
         
         .stat-item {
@@ -446,20 +556,22 @@
         }
         
         .stat-value {
-            font-size: 18px;
+            font-size: 20px;
             font-weight: bold;
+            color: #f39c12; /* Orange stat value */
         }
         
         .stat-label {
             font-size: 12px;
-            color: #666;
+            color: #636e72;
+            font-weight: 500;
         }
         
         .profile-section-title {
-            font-size: 16px;
+            font-size: 18px;
             font-weight: bold;
-            margin: 20px 0 10px;
-            color: #2c3e50;
+            margin: 25px 0 15px;
+            color: #2d3436;
         }
         
         .my-parts-list {
@@ -469,22 +581,30 @@
         }
         
         .my-part-item {
-            border: 1px solid #eee;
-            border-radius: 8px;
-            padding: 15px;
+            border: none;
+            border-radius: 12px;
+            padding: 20px;
             display: flex;
             gap: 15px;
+            background: #f8f9fa;
+            transition: all 0.3s ease;
+        }
+        
+        .my-part-item:hover {
+            background: white;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
         }
         
         .my-part-image {
             width: 80px;
             height: 80px;
             background: #f0f0f0;
-            border-radius: 5px;
+            border-radius: 8px;
             display: flex;
             justify-content: center;
             align-items: center;
             font-size: 30px;
+            overflow: hidden;
         }
         
         .my-part-info {
@@ -493,37 +613,49 @@
         
         .my-part-title {
             font-weight: bold;
-            margin-bottom: 5px;
+            margin-bottom: 8px;
+            color: #2d3436;
         }
         
         .my-part-price {
-            color: #e74c3c;
+            color: #f39c12; /* Orange price */
             font-weight: bold;
+            font-size: 16px;
         }
         
         .my-part-actions {
             display: flex;
             gap: 10px;
-            margin-top: 10px;
+            margin-top: 12px;
         }
         
         .action-btn {
-            padding: 5px 10px;
-            border-radius: 5px;
+            padding: 8px 12px;
+            border-radius: 8px;
             font-size: 12px;
             cursor: pointer;
+            font-weight: 500;
+            transition: all 0.3s ease;
         }
         
         .edit-btn {
-            background: #3498db;
+            background: linear-gradient(135deg, #7f8c8d 0%, #95a5a6 100%); /* Gray for edit */
             color: white;
             border: none;
         }
         
+        .edit-btn:hover {
+            transform: translateY(-1px);
+        }
+        
         .delete-btn {
-            background: #e74c3c;
+            background: linear-gradient(135deg, #e17055 0%, #d63031 100%); /* Keep red for delete */
             color: white;
             border: none;
+        }
+        
+        .delete-btn:hover {
+            transform: translateY(-1px);
         }
     </style>
 </head>
@@ -535,609 +667,412 @@
         </div>
         
         <div class="header">
-            <div class="logo">🔧 ClassicParts</div>
+            <div class="logo">⛏️ Auto Garimpo</div>
             <div class="nav-buttons">
                 <button class="nav-btn active" onclick="showScreen('home', this)">Início</button>
                 <button class="nav-btn" onclick="showScreen('sell', this)">Vender</button>
                 <button class="nav-btn" onclick="showScreen('chat', this)">Chat</button>
             </div>
         </div>
-        
+
         <!-- Tela Principal -->
         <div id="home-screen" class="content active">
             <input type="text" class="search-bar" placeholder="Buscar peças (ex: Fusca carburador)" oninput="searchParts()">
-            <div id="parts-container">
-                <!-- Parts will be loaded dynamically -->
-            </div>
+            <div id="parts-container"></div>
         </div>
-        
-        <!-- Tela de Vender -->
+
+        <!-- Tela de Venda -->
         <div id="sell-screen" class="content form-screen">
-            <h2 style="margin-bottom: 20px; color: #2c3e50;">Anunciar Peça</h2>
-            
+            <h2 style="margin-bottom: 20px; color: #2d3436;">Anunciar Peça</h2>
             <form id="sell-form" onsubmit="event.preventDefault(); addPart();">
                 <div class="form-group">
                     <label class="form-label">Fotos da Peça *</label>
-                    <input type="file" id="part-images" accept="image/*" multiple style="display: none;">
                     <div class="upload-area" onclick="document.getElementById('part-images').click()">
-                        <div class="upload-text">
-                            <i class="fas fa-camera" style="font-size: 24px; margin-bottom: 8px;"></i><br>
-                            Adicionar fotos (máx. 3)
-                        </div>
+                        <i class="fas fa-camera" style="font-size: 24px; margin-bottom: 10px;"></i>
+                        <div class="upload-text">Adicionar fotos (máx. 3)</div>
                     </div>
+                    <input type="file" id="part-images" accept="image/*" multiple style="display: none;">
                     <div id="preview-container"></div>
                 </div>
-                
+
                 <div class="form-group">
                     <label class="form-label">Título do Anúncio *</label>
                     <input type="text" name="title" class="form-input" placeholder="Ex: Carburador Fusca 1300 Original" required>
                 </div>
-                
+
                 <div class="form-group">
                     <label class="form-label">Marca *</label>
                     <input type="text" name="brand" class="form-input" placeholder="Ex: Volkswagen" required>
                 </div>
-                
+
                 <div class="form-group">
                     <label class="form-label">Modelo *</label>
                     <input type="text" name="model" class="form-input" placeholder="Ex: Fusca" required>
                 </div>
-                
+
                 <div class="form-group">
                     <label class="form-label">Ano *</label>
                     <input type="text" name="year" class="form-input" placeholder="Ex: 1970-1975" required>
                 </div>
-                
+
                 <div class="form-group">
                     <label class="form-label">Preço (R$) *</label>
-                    <input type="number" name="price" class="form-input" placeholder="280" step="0.01" required>
+                    <input type="number" name="price" class="form-input" placeholder="Ex: 280.00" step="0.01" required>
                 </div>
-                
+
                 <div class="form-group">
-                    <label class="form-label">Descrição</label>
-                    <textarea name="description" class="form-input" rows="3" placeholder="Descreva o estado da peça, compatibilidade, etc."></textarea>
+                    <label class="form-label">Descrição *</label>
+                    <textarea name="description" class="form-input" placeholder="Descreva o estado da peça, detalhes importantes..." required></textarea>
                 </div>
-                
-                <button type="submit" class="btn-primary"><i class="fas fa-bullhorn"></i> Publicar Anúncio</button>
+
+                <button type="submit" class="btn-primary">
+                    <i class="fas fa-plus"></i>
+                    Publicar Anúncio
+                </button>
             </form>
         </div>
-        
+
         <!-- Tela de Chat -->
-        <div id="chat-screen" class="chat-screen">
-            <div class="chat-header">
-                <strong>💬 João Silva</strong><br>
-                <small>Carburador Fusca 1300</small>
+        <div id="chat-screen" class="content chat-screen">
+            <div class="chat-header">Conversas</div>
+            <div id="chat-messages" class="chat-messages">
+                <div class="message received">
+                    <div class="message-bubble">Olá! Tenho interesse no carburador do Fusca. Ainda está disponível?</div>
+                </div>
+                <div class="message sent">
+                    <div class="message-bubble">Olá! Sim, ainda está disponível. Podemos combinar de você ver a peça.</div>
+                </div>
             </div>
-            
-            <div class="chat-messages">
-                <!-- Mensagens serão carregadas dinamicamente -->
-            </div>
-            
             <div class="chat-input">
-                <input type="text" placeholder="Digite sua mensagem..." id="chat-input-field">
-                <button class="send-btn" onclick="sendMessage()"><i class="fas fa-paper-plane"></i></button>
+                <input type="text" id="chat-input-field" placeholder="Digite sua mensagem..." onkeypress="if(event.key==='Enter') sendMessage()">
+                <button class="send-btn" onclick="sendMessage()">
+                    <i class="fas fa-paper-plane"></i>
+                </button>
             </div>
         </div>
-        
+
         <!-- Tela de Perfil -->
         <div id="profile-screen" class="content profile-screen">
             <div class="profile-header">
-                <div class="profile-avatar">V</div>
-                <div class="profile-name">Você</div>
-                <div class="profile-location">📍 São José, SC</div>
+                <div class="profile-avatar">
+                    <i class="fas fa-user"></i>
+                </div>
+                <div class="profile-name">João Silva</div>
+                <div class="profile-location"><i class="fas fa-map-marker-alt"></i> São Paulo, SP</div>
             </div>
-            
+
             <div class="profile-stats">
                 <div class="stat-item">
-                    <div class="stat-value">12</div>
+                    <div class="stat-value">5</div>
                     <div class="stat-label">Anúncios</div>
-                </div>
-                <div class="stat-item">
-                    <div class="stat-value">24</div>
-                    <div class="stat-label">Vendidos</div>
                 </div>
                 <div class="stat-item">
                     <div class="stat-value">4.8</div>
                     <div class="stat-label">Avaliação</div>
                 </div>
             </div>
-            
-            <div class="profile-section-title">Minhas Peças</div>
-            <div id="my-parts-container" class="my-parts-list">
-                <!-- Peças do usuário serão carregadas aqui -->
-            </div>
+
+            <div class="profile-section-title">Meus Anúncios</div>
+            <div id="my-parts-list" class="my-parts-list"></div>
         </div>
-        
+
+        <!-- Navegação Inferior -->
         <div class="bottom-nav">
             <div class="nav-item active" onclick="showScreen('home', this)">
-                <i class="fas fa-home nav-icon"></i>
+                <div class="nav-icon"><i class="fas fa-home"></i></div>
                 <div class="nav-label">Início</div>
             </div>
             <div class="nav-item" onclick="showScreen('sell', this)">
-                <i class="fas fa-plus-circle nav-icon"></i>
+                <div class="nav-icon"><i class="fas fa-plus"></i></div>
                 <div class="nav-label">Vender</div>
             </div>
             <div class="nav-item" onclick="showScreen('chat', this)">
-                <i class="fas fa-comments nav-icon"></i>
-                <div class="nav-label">Conversas</div>
+                <div class="nav-icon"><i class="fas fa-comments"></i></div>
+                <div class="nav-label">Chat</div>
             </div>
             <div class="nav-item" onclick="showScreen('profile', this)">
-                <i class="fas fa-user nav-icon"></i>
+                <div class="nav-icon"><i class="fas fa-user"></i></div>
                 <div class="nav-label">Perfil</div>
-            </div>
-        </div>
-
-        <!-- Toast Notification -->
-        <div id="toast" class="toast"></div>
-
-        <!-- Modal de Instruções -->
-        <div id="instructions-modal" class="modal">
-            <div class="modal-content">
-                <span class="close-modal" onclick="closeModal()">&times;</span>
-                <h2>Bem-vindo ao ClassicParts!</h2>
-                <p>Este é um protótipo para testes. Aqui está como você pode testar:</p>
-                <ul>
-                    <li><strong>Início:</strong> Veja peças disponíveis e clique para conversar</li>
-                    <li><strong>Vender:</strong> Cadastre novas peças para venda</li>
-                    <li><strong>Chat:</strong> Interaja com vendedores sobre as peças</li>
-                    <li><strong>Perfil:</strong> Visualize suas informações e anúncios</li>
-                </ul>
-                <button class="reset-btn" onclick="resetApp()">Resetar Dados</button>
             </div>
         </div>
     </div>
 
+    <!-- Modal de Detalhes da Peça -->
+    <div id="part-detail-modal" class="modal">
+        <div class="modal-content">
+            <span class="close-modal" onclick="closeModal()">&times;</span>
+            <div id="detail-image" style="margin-bottom: 20px;"></div>
+            <h3 id="detail-title" style="margin-bottom: 10px;"></h3>
+            <p id="detail-brand-model" style="color: #636e72; margin-bottom: 15px;"></p>
+            <p id="detail-price" style="font-size: 24px; font-weight: bold; color: #f39c12; margin-bottom: 10px;"></p>
+            <p id="detail-location" style="color: #74b9ff; margin-bottom: 20px;"><i class="fas fa-map-marker-alt"></i> </p>
+            <p id="detail-description" style="line-height: 1.6;"></p>
+            <button class="btn-primary" style="margin-top: 20px;">
+                <i class="fas fa-comments"></i>
+                Entrar em Contato
+            </button>
+        </div>
+    </div>
+
     <script>
-        // Data storage
-        let parts = JSON.parse(sessionStorage.getItem('parts')) || [
+        let parts = [
             {
                 id: 1,
-                title: 'Carburador Fusca 1300',
-                brand: 'Volkswagen',
-                model: 'Fusca',
-                year: '1970-1975',
-                price: 280,
-                location: 'São José, SC',
-                description: 'Carburador original, funcionando perfeitamente',
-                seller: 'João Silva',
-                sellerId: 2,
-                image: '📷 Carburador Fusca 1300'
+                title: "Carburador Fusca 1300 Original",
+                brand: "Volkswagen",
+                model: "Fusca",
+                year: "1970-1975",
+                price: 280.00,
+                location: "São Paulo, SP",
+                description: "Carburador em ótimo estado, funcionando perfeitamente. Pouco uso.",
+                image: "e4EK2GLQjWpu.webp"
             },
             {
                 id: 2,
-                title: 'Volante Chevette Original',
-                brand: 'Chevrolet',
-                model: 'Chevette',
-                year: '1980-1985',
-                price: 350,
-                location: 'Florianópolis, SC',
-                description: 'Volante em ótimo estado, sem desgastes',
-                seller: 'Maria Oliveira',
-                sellerId: 3,
-                image: '📷 Volante Chevette'
+                title: "Farol Opala SS",
+                brand: "Chevrolet",
+                model: "Opala SS",
+                year: "1975-1979",
+                price: 450.00,
+                location: "Rio de Janeiro, RJ",
+                description: "Par de faróis originais, lentes sem trincas. Cromado em bom estado.",
+                image: "RT3CmQBTnLS1.jpg"
             },
             {
                 id: 3,
-                title: 'Radiador Opala 6 cilindros',
-                brand: 'Chevrolet',
-                model: 'Opala',
-                year: '1978-1985',
-                price: 420,
-                location: 'Joinville, SC',
-                description: 'Radiador em ótimo estado, sem vazamentos',
-                seller: 'Carlos Souza',
-                sellerId: 4,
-                image: '📷 Radiador Opala'
+                title: "Caixa de Câmbio Kombi Antiga",
+                brand: "Volkswagen",
+                model: "Kombi",
+                year: "1960-1970",
+                price: 1200.00,
+                location: "Belo Horizonte, MG",
+                description: "Caixa de câmbio revisada, pronta para uso. Ideal para restauração.",
+                image: "gCERtrP7Atar.jpg"
             },
             {
                 id: 4,
-                title: 'Banco Dianteiro Fusca',
-                brand: 'Volkswagen',
-                model: 'Fusca',
-                year: '1965-1979',
-                price: 600,
-                location: 'Blumenau, SC',
-                description: 'Banco original, estofamento renovado',
-                seller: 'Ana Santos',
-                sellerId: 5,
-                image: '📷 Banco Fusca'
+                title: "Volante Esportivo Gol GTi",
+                brand: "Volkswagen",
+                model: "Gol GTi",
+                year: "1988-1994",
+                price: 300.00,
+                location: "Curitiba, PR",
+                description: "Volante original, em bom estado de conservação. Detalhes mínimos de uso.",
+                image: "dNYwG9CHguHC.jpeg"
             },
             {
                 id: 5,
-                title: 'Lanterna Traseira Brasília',
-                brand: 'Volkswagen',
-                model: 'Brasília',
-                year: '1973-1980',
-                price: 180,
-                location: 'Itajaí, SC',
-                description: 'Lanterna original, sem trincas',
-                seller: 'Pedro Costa',
-                sellerId: 6,
-                image: '📷 Lanterna Brasília'
+                title: "Motor Parcial Maverick V8",
+                brand: "Ford",
+                model: "Maverick",
+                year: "1973-1979",
+                price: 5000.00,
+                location: "Porto Alegre, RS",
+                description: "Motor V8 parcial, necessita de retífica. Ótima base para projeto.",
+                image: "gYCClutPTc0e.webp"
             }
         ];
-        
-        let messages = JSON.parse(sessionStorage.getItem('messages')) || {};
-        let currentChatPart = null;
-        let currentUser = {
-            id: 1,
-            name: 'Você',
-            location: 'São José, SC',
-            rating: 4.8
-        };
-        
-        function saveData() {
-            sessionStorage.setItem('parts', JSON.stringify(parts));
-            sessionStorage.setItem('messages', JSON.stringify(messages));
-        }
-        
-        function showScreen(screenName, el = null) {
-            // Hide all screens
-            document.querySelectorAll('.content, .chat-screen').forEach(screen => {
+
+        let currentScreen = 'home';
+
+        function showScreen(screenId, element) {
+            document.querySelectorAll('.content').forEach(screen => {
                 screen.classList.remove('active');
             });
-            
-            // Remove active from nav buttons
-            document.querySelectorAll('.nav-btn, .nav-item').forEach(btn => {
+            document.getElementById(`${screenId}-screen`).classList.add('active');
+
+            document.querySelectorAll('.nav-btn').forEach(btn => {
                 btn.classList.remove('active');
             });
-            
-            // Show selected screen
-            if (screenName === 'home') {
-                document.getElementById('home-screen').classList.add('active');
-                loadParts();
-            } else if (screenName === 'sell') {
-                document.getElementById('sell-screen').classList.add('active');
-            } else if (screenName === 'chat') {
-                document.getElementById('chat-screen').classList.add('active');
-                loadChat();
-            } else if (screenName === 'profile') {
-                document.getElementById('profile-screen').classList.add('active');
-                loadProfile();
+            if (element) {
+                element.classList.add('active');
             }
-            
-            // Add active to clicked nav
-            if (el) {
-                el.classList.add('active');
-            }
+
+            document.querySelectorAll('.bottom-nav .nav-item').forEach(item => {
+                item.classList.remove('active');
+            });
+            document.querySelector(`.bottom-nav .nav-item[onclick*="${screenId}"]`).classList.add('active');
+
+            currentScreen = screenId;
         }
-        
-        function loadParts(searchTerm = '') {
-            const container = document.getElementById('parts-container');
-            const filteredParts = parts.filter(part => 
-                searchTerm === '' || 
-                part.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
-                part.brand.toLowerCase().includes(searchTerm.toLowerCase()) ||
-                part.model.toLowerCase().includes(searchTerm.toLowerCase())
-            );
-            
-            container.innerHTML = filteredParts.map(part => `
-                <div class="card" onclick="openChat(${part.id})">
-                    <div class="card-image">${part.image}</div>
+
+        function loadParts() {
+            const partsContainer = document.getElementById('parts-container');
+            partsContainer.innerHTML = '';
+            parts.forEach(part => {
+                const card = document.createElement('div');
+                card.classList.add('card');
+                card.innerHTML = `
+                    <div class="card-image"><img src="${part.image}" alt="${part.title}"></div>
                     <div class="card-content">
                         <div class="card-title">${part.title}</div>
-                        <div class="card-subtitle">${part.brand} ${part.model} • ${part.year}</div>
-                        <div class="card-price">R$ ${part.price.toFixed(2)}</div>
-                        <div class="card-location">📍 ${part.location}</div>
+                        <div class="card-subtitle">${part.brand} ${part.model} (${part.year})</div>
+                        <div class="card-price">R$ ${part.price.toFixed(2).replace('.', ',')}</div>
+                        <div class="card-location"><i class="fas fa-map-marker-alt"></i> ${part.location}</div>
                     </div>
-                </div>
-            `).join('');
-        }
-        
-        function openChat(partId) {
-            currentChatPart = parts.find(p => p.id === partId);
-            if (currentChatPart) {
-                document.querySelector('.chat-header').innerHTML = `
-                    <strong>💬 ${currentChatPart.seller}</strong><br>
-                    <small>${currentChatPart.title}</small>
                 `;
-                
-                // Inicializa conversa se não existir
-                if (!messages[partId]) {
-                    messages[partId] = [
-                        { sender: 'other', text: 'Oi! Esse item está disponível?' },
-                        { sender: 'me', text: 'Oi! Sim, está disponível. Quer mais detalhes?' }
-                    ];
-                    saveData();
-                }
-                
-                showScreen('chat');
-            }
+                card.onclick = () => showPartDetail(part);
+                partsContainer.appendChild(card);
+            });
         }
-        
-        function loadChat() {
-            if (!currentChatPart) return;
-            
-            const chatId = currentChatPart.id;
-            const chatMessages = messages[chatId] || [];
-            
-            const messagesContainer = document.querySelector('.chat-messages');
-            messagesContainer.innerHTML = chatMessages.map(msg => `
-                <div class="message ${msg.sender === 'me' ? 'sent' : 'received'}">
-                    <div class="message-bubble">${msg.text}</div>
-                </div>
-            `).join('');
-            
-            messagesContainer.scrollTop = messagesContainer.scrollHeight;
+
+        function searchParts() {
+            const searchTerm = document.querySelector('.search-bar').value.toLowerCase();
+            const filteredParts = parts.filter(part => 
+                part.title.toLowerCase().includes(searchTerm) ||
+                part.brand.toLowerCase().includes(searchTerm) ||
+                part.model.toLowerCase().includes(searchTerm) ||
+                part.description.toLowerCase().includes(searchTerm)
+            );
+            const partsContainer = document.getElementById('parts-container');
+            partsContainer.innerHTML = '';
+            filteredParts.forEach(part => {
+                const card = document.createElement('div');
+                card.classList.add('card');
+                card.innerHTML = `
+                    <div class="card-image"><img src="${part.image}" alt="${part.title}"></div>
+                    <div class="card-content">
+                        <div class="card-title">${part.title}</div>
+                        <div class="card-subtitle">${part.brand} ${part.model} (${part.year})</div>
+                        <div class="card-price">R$ ${part.price.toFixed(2).replace('.', ',')}</div>
+                        <div class="card-location"><i class="fas fa-map-marker-alt"></i> ${part.location}</div>
+                    </div>
+                `;
+                card.onclick = () => showPartDetail(part);
+                partsContainer.appendChild(card);
+            });
         }
-        
-        function sendMessage() {
-            if (!currentChatPart) return;
-            
-            const input = document.getElementById('chat-input-field');
-            const text = input.value.trim();
-            
-            if (text) {
-                const chatId = currentChatPart.id;
-                if (!messages[chatId]) {
-                    messages[chatId] = [];
-                }
-                
-                messages[chatId].push({ sender: 'me', text: text });
-                
-                // Resposta automática
-                setTimeout(() => {
-                    const responses = [
-                        "Interessante! Posso te ajudar em mais alguma coisa?",
-                        "Ótima pergunta! Sim, está disponível para retirada imediata.",
-                        "Vou verificar e te respondo em breve.",
-                        "Posso te enviar mais fotos se quiser.",
-                        "Qual seu horário preferido para ver a peça?"
-                    ];
-                    const randomResponse = responses[Math.floor(Math.random() * responses.length)];
-                    messages[chatId].push({ sender: 'other', text: randomResponse });
-                    saveData();
-                    loadChat();
-                }, 1000);
-                
-                input.value = '';
-                saveData();
-                loadChat();
-            }
-        }
-        
+
         function addPart() {
             const form = document.getElementById('sell-form');
-            const formData = new FormData(form);
-            
-            if (!formData.get('title') || !formData.get('brand') || !formData.get('model') || !formData.get('price')) {
-                showToast('❌ Preencha todos os campos obrigatórios');
-                return;
-            }
-            
             const newPart = {
-                id: Date.now(),
-                title: formData.get('title'),
-                brand: formData.get('brand'),
-                model: formData.get('model'),
-                year: formData.get('year'),
-                price: parseFloat(formData.get('price')),
-                location: 'São José, SC',
-                description: formData.get('description'),
-                seller: 'Você',
-                sellerId: currentUser.id,
-                image: '📷 ' + formData.get('title')
+                id: parts.length + 1,
+                title: form.elements['title'].value,
+                brand: form.elements['brand'].value,
+                model: form.elements['model'].value,
+                year: form.elements['year'].value,
+                price: parseFloat(form.elements['price'].value),
+                location: "Localização Padrão, BR", // Pode ser melhorado com geolocalização
+                description: form.elements['description'].value
             };
-            
-            parts.unshift(newPart);
-            saveData();
+            parts.push(newPart);
+            loadParts();
+            showToast('Anúncio adicionado com sucesso!');
             form.reset();
             document.getElementById('preview-container').innerHTML = '';
-            showToast('✅ Peça publicada com sucesso!');
-            showScreen('home');
+            showScreen('home', document.querySelector('.nav-btn.active'));
         }
-        
-        function loadProfile() {
-            const myParts = parts.filter(part => part.sellerId === currentUser.id);
-            const container = document.getElementById('my-parts-container');
-            
-            container.innerHTML = myParts.map(part => `
-                <div class="my-part-item">
-                    <div class="my-part-image">${part.image}</div>
-                    <div class="my-part-info">
-                        <div class="my-part-title">${part.title}</div>
-                        <div class="my-part-subtitle">${part.brand} ${part.model} • ${part.year}</div>
-                        <div class="my-part-price">R$ ${part.price.toFixed(2)}</div>
-                        <div class="my-part-actions">
-                            <button class="action-btn edit-btn" onclick="editPart(${part.id})">Editar</button>
-                            <button class="action-btn delete-btn" onclick="deletePart(${part.id})">Excluir</button>
-                        </div>
-                    </div>
-                </div>
-            `).join('');
-        }
-        
-        function editPart(partId) {
-            const part = parts.find(p => p.id === partId);
-            if (!part) return;
-            
-            // Preenche o formulário com os dados da peça
-            const form = document.getElementById('sell-form');
-            form.elements['title'].value = part.title;
-            form.elements['brand'].value = part.brand;
-            form.elements['model'].value = part.model;
-            form.elements['year'].value = part.year;
-            form.elements['price'].value = part.price;
-            form.elements['description'].value = part.description || '';
-            
-            // Mostra a tela de venda
-            showScreen('sell');
-            
-            // Atualiza o comportamento do formulário para edição
-            form.onsubmit = function(e) {
-                e.preventDefault();
-                updatePart(partId);
-            };
-            
-            showToast('Edite os dados da peça e clique em "Publicar Anúncio" para salvar');
-        }
-        
-        function updatePart(partId) {
-            const form = document.getElementById('sell-form');
-            const formData = new FormData(form);
-            
-            if (!formData.get('title') || !formData.get('brand') || !formData.get('model') || !formData.get('price')) {
-                showToast('❌ Preencha todos os campos obrigatórios');
-                return;
-            }
-            
-            const partIndex = parts.findIndex(p => p.id === partId);
-            if (partIndex === -1) return;
-            
-            parts[partIndex] = {
-                ...parts[partIndex],
-                title: formData.get('title'),
-                brand: formData.get('brand'),
-                model: formData.get('model'),
-                year: formData.get('year'),
-                price: parseFloat(formData.get('price')),
-                description: formData.get('description'),
-                image: '📷 ' + formData.get('title')
-            };
-            
-            saveData();
-            form.reset();
-            document.getElementById('preview-container').innerHTML = '';
-            showToast('✅ Peça atualizada com sucesso!');
-            
-            // Restaura o comportamento padrão do formulário
-            form.onsubmit = function(e) {
-                e.preventDefault();
-                addPart();
-            };
-            
-            showScreen('profile');
-        }
-        
-        function deletePart(partId) {
-            if (confirm('Tem certeza que deseja excluir este anúncio?')) {
-                parts = parts.filter(p => p.id !== partId);
-                saveData();
-                loadProfile();
-                showToast('✅ Anúncio excluído com sucesso!');
-            }
-        }
-        
-        function searchParts() {
-            const searchTerm = document.querySelector('.search-bar').value;
-            loadParts(searchTerm);
-        }
-        
+
         function showToast(message) {
-            const toast = document.getElementById('toast');
+            const toast = document.createElement('div');
+            toast.classList.add('toast');
             toast.textContent = message;
-            toast.style.opacity = 1;
-            
+            document.body.appendChild(toast);
+            setTimeout(() => {
+                toast.style.opacity = 1;
+            }, 100);
             setTimeout(() => {
                 toast.style.opacity = 0;
+                setTimeout(() => {
+                    toast.remove();
+                }, 300);
             }, 3000);
         }
-        
-        // Upload e preview de imagens
-        document.getElementById('part-images').addEventListener('change', function(e) {
+
+        // Modal de Detalhes da Peça
+        function showPartDetail(part) {
+            const modal = document.getElementById('part-detail-modal');
+            document.getElementById('detail-title').textContent = part.title;
+            document.getElementById('detail-brand-model').textContent = `${part.brand} ${part.model} (${part.year})`;
+            document.getElementById('detail-price').textContent = `R$ ${part.price.toFixed(2).replace('.', ',')}`;
+            document.getElementById('detail-location').textContent = part.location;
+            document.getElementById('detail-description').textContent = part.description;
+            
+            // Imagem real
+            document.getElementById('detail-image').innerHTML = `<img src="${part.image}" alt="${part.title}" style="width: 100%; height: 200px; object-fit: cover; border-radius: 8px;">`;
+
+            modal.style.display = 'flex';
+        }
+
+        function closeModal() {
+            document.getElementById('part-detail-modal').style.display = 'none';
+        }
+
+        // Chat
+        function sendMessage() {
+            const chatInputField = document.getElementById('chat-input-field');
+            const messageText = chatInputField.value.trim();
+            if (messageText) {
+                const chatMessages = document.getElementById('chat-messages');
+                const messageDiv = document.createElement('div');
+                messageDiv.classList.add('message', 'sent');
+                messageDiv.innerHTML = `<div class="message-bubble">${messageText}</div>`;
+                chatMessages.appendChild(messageDiv);
+                chatInputField.value = '';
+                chatMessages.scrollTop = chatMessages.scrollHeight;
+            }
+        }
+
+        // Upload de Imagens
+        document.getElementById('part-images').addEventListener('change', function(event) {
             const previewContainer = document.getElementById('preview-container');
             previewContainer.innerHTML = '';
-            
-            const files = e.target.files;
-            for (let i = 0; i < Math.min(files.length, 3); i++) {
+            const files = event.target.files;
+            if (files.length > 3) {
+                alert('Você pode adicionar no máximo 3 fotos.');
+                this.value = ''; // Limpa os arquivos selecionados
+                return;
+            }
+            for (let i = 0; i < files.length; i++) {
+                const file = files[i];
                 const reader = new FileReader();
-                reader.onload = function(event) {
+                reader.onload = function(e) {
                     const img = document.createElement('img');
-                    img.src = event.target.result;
+                    img.src = e.target.result;
                     img.style.width = '80px';
                     img.style.height = '80px';
                     img.style.objectFit = 'cover';
-                    img.style.borderRadius = '8px';
+                    img.style.borderRadius = '5px';
                     previewContainer.appendChild(img);
                 };
-                reader.readAsDataURL(files[i]);
+                reader.readAsDataURL(file);
             }
         });
-        
-        function openModal() {
-            document.getElementById('instructions-modal').style.display = 'flex';
-        }
-        
-        function closeModal() {
-            document.getElementById('instructions-modal').style.display = 'none';
-        }
-        
-        function resetApp() {
-            sessionStorage.clear();
-            parts = [
-                {
-                    id: 1,
-                    title: 'Carburador Fusca 1300',
-                    brand: 'Volkswagen',
-                    model: 'Fusca',
-                    year: '1970-1975',
-                    price: 280,
-                    location: 'São José, SC',
-                    description: 'Carburador original, funcionando perfeitamente',
-                    seller: 'João Silva',
-                    sellerId: 2,
-                    image: '📷 Carburador Fusca 1300'
-                },
-                {
-                    id: 2,
-                    title: 'Volante Chevette Original',
-                    brand: 'Chevrolet',
-                    model: 'Chevette',
-                    year: '1980-1985',
-                    price: 350,
-                    location: 'Florianópolis, SC',
-                    description: 'Volante em ótimo estado, sem desgastes',
-                    seller: 'Maria Oliveira',
-                    sellerId: 3,
-                    image: '📷 Volante Chevette'
-                },
-                {
-                    id: 3,
-                    title: 'Radiador Opala 6 cilindros',
-                    brand: 'Chevrolet',
-                    model: 'Opala',
-                    year: '1978-1985',
-                    price: 420,
-                    location: 'Joinville, SC',
-                    description: 'Radiador em ótimo estado, sem vazamentos',
-                    seller: 'Carlos Souza',
-                    sellerId: 4,
-                    image: '📷 Radiador Opala'
-                },
-                {
-                    id: 4,
-                    title: 'Banco Dianteiro Fusca',
-                    brand: 'Volkswagen',
-                    model: 'Fusca',
-                    year: '1965-1979',
-                    price: 600,
-                    location: 'Blumenau, SC',
-                    description: 'Banco original, estofamento renovado',
-                    seller: 'Ana Santos',
-                    sellerId: 5,
-                    image: '📷 Banco Fusca'
-                },
-                {
-                    id: 5,
-                    title: 'Lanterna Traseira Brasília',
-                    brand: 'Volkswagen',
-                    model: 'Brasília',
-                    year: '1973-1980',
-                    price: 180,
-                    location: 'Itajaí, SC',
-                    description: 'Lanterna original, sem trincas',
-                    seller: 'Pedro Costa',
-                    sellerId: 6,
-                    image: '📷 Lanterna Brasília'
-                }
-            ];
-            messages = {};
-            saveData();
-            loadParts();
-            closeModal();
-            showToast('✅ Aplicativo resetado com sucesso!');
-}
 
-        </script>
+        // Perfil
+        function loadMyParts() {
+            const myPartsList = document.getElementById('my-parts-list');
+            myPartsList.innerHTML = '';
+            // Exemplo de peças do usuário (pode ser as mesmas do array 'parts' ou um subconjunto)
+            const userParts = [
+                parts[0], // Exemplo: Carburador Fusca
+                parts[3]  // Exemplo: Volante Gol GTi
+            ];
+
+            userParts.forEach(part => {
+                const item = document.createElement('div');
+                item.classList.add('my-part-item');
+                item.innerHTML = `
+                    <div class="my-part-image"><img src="${part.image}" alt="${part.title}" style="width: 80px; height: 80px; object-fit: cover; border-radius: 5px;"></div>
+                    <div class="my-part-info">
+                        <div class="my-part-title">${part.title}</div>
+                        <div class="my-part-price">R$ ${part.price.toFixed(2).replace('.', ',')}</div>
+                        <div class="my-part-actions">
+                            <button class="action-btn edit-btn"><i class="fas fa-edit"></i> Editar</button>
+                            <button class="action-btn delete-btn"><i class="fas fa-trash"></i> Excluir</button>
+                        </div>
+                    </div>
+                `;
+                myPartsList.appendChild(item);
+            });
+        }
+
+        // Inicialização
+        document.addEventListener('DOMContentLoaded', () => {
+            loadParts();
+            loadMyParts();
+        });
+    </script>
 </body>
 </html>
+
